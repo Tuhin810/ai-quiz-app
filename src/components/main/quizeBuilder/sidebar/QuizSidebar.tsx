@@ -2,9 +2,9 @@
 
 import React, { useState } from "react";
 import { MdOutlineQuiz, MdOutlineCheckCircle, MdAdd } from "react-icons/md";
-import { BsThreeDots } from "react-icons/bs";
+import { BsThreeDots, BsTrash } from "react-icons/bs";
 
-const QuizSidebar = ({ setForms, forms }: any) => {
+const QuizSidebar = ({ setForms, forms, handleSubmit }: any) => {
   const [questions, setQuestions] = useState<string[]>(["New Question 1"]);
 
   const addQuestion = () => {
@@ -18,6 +18,12 @@ const QuizSidebar = ({ setForms, forms }: any) => {
       },
     ]);
     setQuestions((prev) => [...prev, `New Question ${prev.length + 1}`]);
+  };
+
+  const deleteForm = (indexToDelete: number) => {
+    setForms((prev: any) =>
+      prev.filter((_: any, i: number) => i !== indexToDelete)
+    );
   };
 
   return (
@@ -54,7 +60,12 @@ const QuizSidebar = ({ setForms, forms }: any) => {
                   Multiple choice
                 </div>
               </div>
-              <BsThreeDots className="text-gray-400 mt-1 cursor-pointer" />
+              <div
+                className="cursor-pointer pt-1"
+                onClick={() => deleteForm(idx)}
+              >
+                <BsTrash className="text-gray-600 hover:text-red-500" />
+              </div>
             </div>
           ))}
         </div>
@@ -62,12 +73,17 @@ const QuizSidebar = ({ setForms, forms }: any) => {
 
       {/* Result Screen */}
       <div className="mt-6">
-        <div className="border border-gray-300 rounded-xl p-3 flex items-center justify-between hover:shadow-md transition cursor-pointer">
+        <div
+          onClick={handleSubmit}
+          className="border border-gray-300 bg-green-500 rounded-xl p-3 flex items-center justify-between hover:shadow-md transition cursor-pointer"
+        >
           <div className="flex items-center gap-2">
-            <MdOutlineCheckCircle className="text-gray-500 text-xl" />
+            <MdOutlineCheckCircle className="text-gray-100 text-xl" />
             <div>
-              <div className="text-sm font-semibold">Result Screen</div>
-              <div className="text-xs text-gray-500">
+              <div className="text-sm text-white font-semibold">
+                Submit Questions
+              </div>
+              <div className="text-xs text-gray-100">
                 Set your Passed/failed message
               </div>
             </div>

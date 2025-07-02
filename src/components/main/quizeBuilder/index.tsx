@@ -50,26 +50,15 @@ const QuizBuilder = () => {
 
   return (
     <div className="flex min-h-screen">
-      <QuizSidebar setForms={setForms} forms={forms} />
+      <QuizSidebar
+        setForms={setForms}
+        forms={forms}
+        handleSubmit={handleSubmit}
+      />
       <div className="w-full h-screen overflow-y-scroll p-10 space-y-5">
         {forms.map((form, idx) => (
           <QuizForm key={idx} index={idx} {...form} onChange={updateForm} />
         ))}
-
-        <div className="flex gap-4 mt-10">
-          <button
-            onClick={addForm}
-            className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
-          >
-            + Add New Question
-          </button>
-          <button
-            onClick={handleSubmit}
-            className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700"
-          >
-            Submit Quiz
-          </button>
-        </div>
       </div>
     </div>
   );
