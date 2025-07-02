@@ -62,7 +62,7 @@ const QuizForm: React.FC<QuizFormProps> = ({
     >
       {/* Question Field */}
       <div>
-        <label className="font-semibold text-gray-800 text-lg mb-2 block flex items-center gap-2">
+        <label className="font-semibold text-gray-800 text-md mb-2 block flex items-center gap-2">
           <BsFillQuestionCircleFill /> Question{" "}
           <span className="text-red-500">*</span>
         </label>
@@ -70,7 +70,7 @@ const QuizForm: React.FC<QuizFormProps> = ({
           value={question}
           onChange={(e) => handleChange({ question: e.target.value })}
           placeholder="Type your quiz question here..."
-          className="w-full p-4 bg-gray-100 rounded-xl text-lg placeholder-gray-500 placeholder:text-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
+          className="w-full p-4 bg-gray-100 rounded-xl text-md placeholder-gray-500 placeholder:text-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
           rows={3}
         />
       </div>

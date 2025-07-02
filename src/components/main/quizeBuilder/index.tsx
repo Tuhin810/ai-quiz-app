@@ -51,7 +51,7 @@ const QuizBuilder = () => {
   };
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen pt-1">
       <QuizSidebar
         setForms={setForms}
         forms={forms}

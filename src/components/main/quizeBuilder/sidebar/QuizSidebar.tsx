@@ -5,6 +5,7 @@ import { MdOutlineQuiz, MdOutlineCheckCircle, MdAdd } from "react-icons/md";
 import { BsThreeDots, BsTrash } from "react-icons/bs";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { PiCursorClickDuotone } from "react-icons/pi";
+import AiButton from "@/components/shared/aiButton/AiButton";
 
 const QuizSidebar = ({
   setForms,
@@ -36,7 +37,7 @@ const QuizSidebar = ({
   };
 
   return (
-    <div className="w-1/4 min-h-screen bg-gray-100 border-r border-gray-200 p-4 flex flex-col justify-between">
+    <div className="w-1/4 h-[92vh] pt-4 pb-8  bg-gray-200 border-r border-gray-200 px-4 flex flex-col justify-between">
       <div>
         {/* Header */}
         <div className="flex items-center justify-between mb-2">
@@ -99,9 +100,11 @@ const QuizSidebar = ({
 
       {/* Result Screen */}
       <div className="mt-6">
+        <AiButton />
         <div
           onClick={handleSubmit}
-          className="border border-gray-300 bg-green-500 rounded-xl p-3 flex items-center justify-between hover:shadow-md transition cursor-pointer"
+          className="border border-gray-300 bg-green-500 rounded-xl 
+          p-3 flex items-center justify-between hover:shadow-md transition cursor-pointer"
         >
           <div className="flex items-center gap-2">
             <MdOutlineCheckCircle className="text-gray-100 text-xl" />
@@ -109,9 +112,7 @@ const QuizSidebar = ({
               <div className="text-sm text-white font-semibold">
                 Submit Questions
               </div>
-              <div className="text-xs text-gray-100">
-                Set your Passed/failed message
-              </div>
+              <div className="text-xs text-gray-100">Click here to submit</div>
             </div>
           </div>
           <BsThreeDots className="text-gray-400 mt-1" />
