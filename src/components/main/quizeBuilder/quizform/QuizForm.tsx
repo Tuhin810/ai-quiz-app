@@ -1,7 +1,11 @@
 import React from "react";
 import { MdAdd, MdCheckBoxOutlineBlank } from "react-icons/md";
 import { IoCheckbox } from "react-icons/io5";
-import { BsTrash } from "react-icons/bs";
+import {
+  BsFillQuestionCircleFill,
+  BsQuestionSquareFill,
+  BsTrash,
+} from "react-icons/bs";
 import { motion } from "framer-motion";
 
 interface QuizFormProps {
@@ -58,8 +62,9 @@ const QuizForm: React.FC<QuizFormProps> = ({
     >
       {/* Question Field */}
       <div>
-        <label className="font-semibold text-gray-800 text-lg mb-2 block">
-          Question <span className="text-red-500">*</span>
+        <label className="font-semibold text-gray-800 text-lg mb-2 block flex items-center gap-2">
+          <BsFillQuestionCircleFill /> Question{" "}
+          <span className="text-red-500">*</span>
         </label>
         <textarea
           value={question}
@@ -93,7 +98,7 @@ const QuizForm: React.FC<QuizFormProps> = ({
           <div key={idx} className="flex items-center gap-3">
             <button type="button" onClick={() => toggleCorrect(idx)}>
               {correctAnswers.includes(idx) ? (
-                <IoCheckbox className="text-purple-600 text-2xl" />
+                <IoCheckbox className="text-blue-600 text-2xl" />
               ) : (
                 <MdCheckBoxOutlineBlank className="text-gray-400 text-2xl" />
               )}
@@ -106,7 +111,7 @@ const QuizForm: React.FC<QuizFormProps> = ({
                 handleChange({ options: updated });
               }}
               placeholder={`Option ${idx + 1}`}
-              className="flex-1 p-2 bg-gray-100 rounded-xl text-md"
+              className="flex-1 p-2 bg-gray-100 rounded-lg text-md"
             />
             {options.length > 2 && (
               <button
@@ -133,7 +138,7 @@ const QuizForm: React.FC<QuizFormProps> = ({
           hover:text-blue-800 border border-dashed border-gray-300 border-3 px-3 py-2 rounded-md transition duration-200"
         >
           <MdAdd className="text-base" />
-          Add answer
+          Add option
         </button>
       </div>
     </motion.div>

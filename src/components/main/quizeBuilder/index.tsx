@@ -14,6 +14,8 @@ const QuizBuilder = () => {
     },
   ]);
 
+  const [selectedIndex, setSelectedIndex] = useState(0); // 🧠 Track selected form
+
   const updateForm = (index: number, updatedData: QuizData) => {
     const updatedForms = [...forms];
     updatedForms[index] = updatedData;
@@ -30,6 +32,7 @@ const QuizBuilder = () => {
         multipleAnswers: false,
       },
     ]);
+    setSelectedIndex(forms.length); // 👈 Select newly added form
   };
 
   const handleSubmit = () => {
@@ -44,7 +47,6 @@ const QuizBuilder = () => {
     };
 
     console.log("Payload ready to send:", payload);
-    // You can now POST this to your API endpoint
     // fetch("/api/submit-quiz", { method: "POST", body: JSON.stringify(payload) })
   };
 
@@ -54,11 +56,20 @@ const QuizBuilder = () => {
         setForms={setForms}
         forms={forms}
         handleSubmit={handleSubmit}
+        selectedIndex={selectedIndex}
+        setSelectedIndex={setSelectedIndex}
+        addForm={addForm}
       />
-      <div className="w-full h-screen overflow-y-scroll p-10 space-y-5">
-        {forms.map((form, idx) => (
-          <QuizForm key={idx} index={idx} {...form} onChange={updateForm} />
-        ))}
+      <div className="w-full h-screen overflow-y-scroll p-10">
+        {/* 🚀 Only show selected form */}
+        {forms[selectedIndex] && (
+          <QuizForm
+            key={selectedIndex}
+            index={selectedIndex}
+            {...forms[selectedIndex]}
+            onChange={updateForm}
+          />
+        )}
       </div>
     </div>
   );

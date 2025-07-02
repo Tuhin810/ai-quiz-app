@@ -3,8 +3,16 @@
 import React, { useState } from "react";
 import { MdOutlineQuiz, MdOutlineCheckCircle, MdAdd } from "react-icons/md";
 import { BsThreeDots, BsTrash } from "react-icons/bs";
+import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+import { PiCursorClickDuotone } from "react-icons/pi";
 
-const QuizSidebar = ({ setForms, forms, handleSubmit }: any) => {
+const QuizSidebar = ({
+  setForms,
+  forms,
+  handleSubmit,
+  selectedIndex,
+  setSelectedIndex,
+}: any) => {
   const [questions, setQuestions] = useState<string[]>(["New Question 1"]);
 
   const addQuestion = () => {
@@ -21,6 +29,7 @@ const QuizSidebar = ({ setForms, forms, handleSubmit }: any) => {
   };
 
   const deleteForm = (indexToDelete: number) => {
+    setSelectedIndex(indexToDelete - 1);
     setForms((prev: any) =>
       prev.filter((_: any, i: number) => i !== indexToDelete)
     );
@@ -50,22 +59,39 @@ const QuizSidebar = ({ setForms, forms, handleSubmit }: any) => {
               key={idx}
               className="border border-gray-300 bg-white rounded-xl p-3 flex items-start justify-between shadow-sm hover:shadow-md transition"
             >
-              <div>
-                <div className="text-md font-semibold">
-                  {idx + 1}. {q.question.slice(0, 25)}
-                  {q.length > 25 ? "..." : ""}
+              <div onClick={() => setSelectedIndex(idx)}>
+                <div className="text-md font-semibold flex  text-center mb-2">
+                  <div className="bg-gray-200 rounded-lg mr-2 text-sm flex items-center text-center justify-center h-6 w-6">
+                    {idx + 1}
+                  </div>
+                  {q.question.slice(0, 20)}...
                 </div>
-                <div className="text-xs text-gray-500 flex items-center gap-1 mt-1">
-                  <MdOutlineQuiz className="text-gray-500" />
-                  Multiple choice
+                {selectedIndex === idx ? (
+                  <div className="text-xs text-greeb-500 flex items-center gap-1 mt-1">
+                    <IoMdCheckmarkCircleOutline
+                      className="text-gray-500"
+                      size={18}
+                    />
+                    Selected Question
+                  </div>
+                ) : (
+                  <div className="text-xs text-gray-500 flex items-center gap-1 mt-1">
+                    <PiCursorClickDuotone className="text-gray-500" size={17} />
+                    Click here to select the question
+                  </div>
+                )}
+              </div>
+              {forms.length > 1 && (
+                <div
+                  className="cursor-pointer pt-1"
+                  onClick={() => {
+                    setSelectedIndex(idx - 1);
+                    deleteForm(idx);
+                  }}
+                >
+                  <BsTrash className="text-gray-600 hover:text-red-500" />
                 </div>
-              </div>
-              <div
-                className="cursor-pointer pt-1"
-                onClick={() => deleteForm(idx)}
-              >
-                <BsTrash className="text-gray-600 hover:text-red-500" />
-              </div>
+              )}
             </div>
           ))}
         </div>
