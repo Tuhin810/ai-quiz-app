@@ -4,16 +4,19 @@ import React, { useState } from "react";
 import { MdOutlineQuiz, MdOutlineCheckCircle, MdAdd } from "react-icons/md";
 import { BsThreeDots } from "react-icons/bs";
 
-const QuizSidebar = () => {
-  const [questions, setQuestions] = useState<string[]>([
-    "What does UI stand for?",
-    "Which aspect of UI design...",
-    "How to export a picture...",
-    "Which term refers to t...",
-    "Why is maintaining co...",
-  ]);
+const QuizSidebar = ({ setForms, forms }: any) => {
+  const [questions, setQuestions] = useState<string[]>(["New Question 1"]);
 
   const addQuestion = () => {
+    setForms((prev: any) => [
+      ...prev,
+      {
+        question: `New Question ${prev.length + 1}`,
+        options: ["", ""],
+        correctAnswers: [],
+        multipleAnswers: false,
+      },
+    ]);
     setQuestions((prev) => [...prev, `New Question ${prev.length + 1}`]);
   };
 
@@ -36,14 +39,14 @@ const QuizSidebar = () => {
 
         {/* Question List */}
         <div className="space-y-3">
-          {questions.map((q, idx) => (
+          {forms.map((q: any, idx: any) => (
             <div
               key={idx}
               className="border border-gray-300 bg-white rounded-xl p-3 flex items-start justify-between shadow-sm hover:shadow-md transition"
             >
               <div>
                 <div className="text-md font-semibold">
-                  {idx + 1}. {q.slice(0, 25)}
+                  {idx + 1}. {q.question.slice(0, 25)}
                   {q.length > 25 ? "..." : ""}
                 </div>
                 <div className="text-xs text-gray-500 flex items-center gap-1 mt-1">
