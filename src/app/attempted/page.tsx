@@ -1,32 +1,35 @@
+"use client";
+import { getAttemptedQuizzes } from "@/api/getQuiz/getAttempetdQuiz.api";
 import QuizList from "@/components/main/quizList/QuizList";
 import Navbar from "@/components/shared/navbar/Navbar";
 import UserSidebar from "@/components/shared/userSidebar/UserSidebar";
-import React from "react";
-
-const quizzes = [
-  {
-    title: "Mastering UI Design for Impactful Solutions",
-    description:
-      "Learn how to build stunning and accessible interfaces using modern UI principles.",
-    tags: ["UI/UX"],
-    urgency: "Not Urgent",
-    enrolledCount: 10,
-    hostedAgo: "Hosted 2h ago",
-    questionsCount: 10,
-    userImg:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjDGMp734S91sDuUFqL51_xRTXS15iiRoHew&s",
-    bgImg:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3GGOg-GQfWhriydCXcNxdZr-CcEho3a2skw&s",
-  },
-];
+import React, { useEffect, useState } from "react";
 
 const page = () => {
+  const [attemptedQuizzes, setAttemptedQuizzes] = useState<any>([]);
+  const [error, setError] = useState("");
+
+  const userId = "68642c6383001c04b2de6833"; // Normally from session/auth context
+
+  const loadAttempts = async () => {
+    try {
+      const data = await getAttemptedQuizzes(userId);
+      setAttemptedQuizzes(data.result);
+      console.log("===>attemptedQuizzes", data.result);
+    } catch (err: any) {
+      setError(err.message || "Failed to fetch attempts.");
+    }
+  };
+  useEffect(() => {
+    loadAttempts();
+  }, []);
   return (
     <div className="flex h-screen overflow-hidden">
       <UserSidebar />
       <div className="w-full">
         <Navbar />
-        <QuizList quizzes={quizzes} />
+
+        <QuizList quizzes={attemptedQuizzes} attempted={true} />
       </div>
     </div>
   );

@@ -4,17 +4,18 @@ import React, { useState } from "react";
 import { FiGrid, FiList } from "react-icons/fi";
 import QuizCards from "@/components/shared/quizCards/QuizCards";
 
-const QuizList = ({ quizzes }: any) => {
+const QuizList = ({ quizzes, attempted }: any) => {
+  console.log("=====>got quizzes", quizzes);
   const [view, setView] = useState<"grid" | "list">("grid");
   const [filter, setFilter] = useState("All");
 
   const filters = ["All", "UI/UX", "Frontend", "Urgent", "Completed"];
 
   // Optional: filter logic (not active yet)
-  const filteredQuizzes =
-    filter === "All"
-      ? quizzes
-      : quizzes.filter((q: any) => q.tags.includes(filter.replace(" ", "")));
+  // const filteredQuizzes =
+  //   filter === "All"
+  //     ? quizzes
+  //     : quizzes.filter((q: any) => q.tags.includes(filter.replace(" ", "")));
 
   return (
     <div className="p-10 space-y-6 h-screen w-full overflow-y-scroll pb-20">
@@ -66,9 +67,29 @@ const QuizList = ({ quizzes }: any) => {
             : "space-y-4"
         }`}
       >
-        {filteredQuizzes.map((quiz: any, index: any) => (
-          <QuizCards key={index} {...quiz} />
-        ))}
+        {attempted ? (
+          <>
+            {quizzes.map((quiz: any, index: any) => (
+              <QuizCards
+                key={index}
+                quiz={quiz?.quiz}
+                date={quiz?.attemptedAt}
+                questionsCount={quiz?.totalQuestions}
+              />
+            ))}
+          </>
+        ) : (
+          <>
+            {quizzes.map((quiz: any, index: any) => (
+              <QuizCards
+                key={index}
+                quiz={quiz?.quiz}
+                date={quiz?.quiz?.createdAt}
+                questionsCount={5}
+              />
+            ))}
+          </>
+        )}
       </div>
     </div>
   );
