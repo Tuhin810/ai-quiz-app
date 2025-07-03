@@ -9,6 +9,7 @@ import QuizForm from "./quizform/QuizForm";
 import { getQuizForAttempt } from "@/app/api/attemptQuiz/index.api";
 import { submitQuiz } from "@/app/api/submitQuiz/index.api";
 import ScoreCard from "@/components/shared/scoreCard/ScoreCard";
+import AiChatBot from "@/components/shared/aiChatBot/AiChatBot";
 
 const QuizAttempt = () => {
   const searchParams = useSearchParams();
@@ -90,7 +91,6 @@ const QuizAttempt = () => {
 
       if (quizData.attempted) {
         console.log("✅ Already attempted. Score:", quizData.score);
-        console.log("Questions with answers:", quizData.questions);
         setAttempted(true);
         setQuizData(quizData);
         setForms(
@@ -106,7 +106,6 @@ const QuizAttempt = () => {
         );
       } else {
         console.log("🆕 Not attempted. Start quiz now!");
-        console.log("Questions to answer:", quizData.questions);
         setForms(
           quizData.questions.map((question: any) => ({
             _id: question.question_id,
@@ -162,6 +161,9 @@ const QuizAttempt = () => {
               <ScoreCard score={quizData?.score} quiz={quizData?.quiz} />
             )}
           </div>
+          {attempted && quizData?.questions && (
+            <AiChatBot quizData={quizData?.questions[selectedIndex]} />
+          )}
         </>
       )}
     </div>
