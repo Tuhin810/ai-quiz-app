@@ -4,25 +4,59 @@ import React, { useState } from "react";
 import { IoSparklesOutline } from "react-icons/io5";
 import { VscSparkle } from "react-icons/vsc";
 
-const AiButton = () => {
+const AiButton = ({ setForms }: any) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [topic, setTopic] = useState("");
   const [questions, setQuestions] = useState(5);
   const [difficulty, setDifficulty] = useState("Easy");
 
-  const handleSubmit = () => {
-    const payload = { topic, questions, difficulty };
-    console.log("AI Quiz Payload:", payload);
-    setIsOpen(false);
+  const handleCreateAiQuiz = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/generate-questions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          topic: topic,
+          count: questions,
+          difficulty: difficulty,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to generate questions");
+      }
+
+      const quiz = await response.json();
+      const transformed = quiz.questions.map((q: any) => ({
+        question: q.text,
+        options: q.options,
+        correctAnswers: [q.correctOptionIndex], // Wrap in array
+        multipleAnswers: false, // or set true if needed
+      }));
+
+      // setForms(transformed);
+      console.log("======>form data", transformed);
+      setForms(transformed);
+      setIsOpen(false);
+      console.log("🧠 AI Quiz JSON:", quiz);
+    } catch (error) {
+      console.error("❌ AI quiz generation failed:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <>
       {/* Button */}
-      <div className="mb-5">
+      <div className="mb-">
         <button
           onClick={() => setIsOpen(true)}
-          className="group relative dark:bg-neutral-800 bg-neutral-200 rounded-full p-1 overflow-hidden"
+          className="group relative dark:bg-neutral-800 bg-neutral-200 rounded-full  overflow-hidden"
         >
           <span className="absolute inset-0 rounded-full overflow-hidden">
             <span className="inset-0 absolute pointer-events-none select-none">
@@ -55,8 +89,8 @@ const AiButton = () => {
           <span className="flex items-center justify-center gap-1 relative z-[1] dark:bg-neutral-950/90 bg-neutral-50/90 rounded-full py-2 px-4 pl-2 w-full">
             <span className="relative group-hover:scale-105 transition-transform group-hover:rotate-[360deg] duration-500">
               <svg
-                width={20}
-                height={22}
+                width={18}
+                height={18}
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -111,11 +145,11 @@ const AiButton = () => {
               />
             </span>
             <span
-              className="pt-1.5 w-40 text-center justify-center  flex pb-2 text-lg
-             px-4 bg-gradient-to-b ml-1.5 dark:from-white dark:to-white/50
+              className="w-10 text-center justify-center  flex  text-lg
+             bg-gradient-to-b  dark:from-white dark:to-white/50
               from-neutral-950 to-neutral-950/50 bg-clip-text text-xs text-transparent group-hover:scale-105 transition transform-gpu"
             >
-              Create quiz with AI
+              Use Ai
             </span>
           </span>
         </button>
@@ -190,13 +224,24 @@ const AiButton = () => {
                 Cancel
               </button> */}
               <div className="relative group">
-                <button className="relative inline-block p-px font-semibold leading-6 text-white bg-neutral-900 shadow-2xl cursor-pointer rounded-2xl shadow-emerald-900 transition-all duration-300 ease-in-out hover:scale-105 active:scale-95 hover:shadow-emerald-600">
-                  <span className="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 p-[2px] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                <button
+                  onClick={handleCreateAiQuiz}
+                  className="relative inline-block p-px font-semibold leading-6 text-white bg-neutral-900 shadow-2xl cursor-pointer rounded-2xl shadow-emerald-900 transition-all duration-300 ease-in-out hover:scale-105 active:scale-95 hover:shadow-emerald-600"
+                >
+                  <span
+                    className="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 p-[2px] 
+                  
+                  opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                  />
                   <span className="relative z-10 block px-6 py-3 rounded-2xl bg-neutral-950">
                     <div className="relative z-10 flex items-center space-x-3">
                       <IoSparklesOutline />
                       <span className="transition-all duration-500 group-hover:translate-x-1.5 text-md group-hover:text-emerald-300">
-                        Generate questions
+                        {loading ? (
+                          <>Generating Questions..</>
+                        ) : (
+                          <>Generate Questions</>
+                        )}
                       </span>
                     </div>
                   </span>

@@ -37,24 +37,27 @@ const QuizSidebar = ({
   };
 
   return (
-    <div className="w-1/4 h-[92vh] pt-4 pb-8  bg-gray-200 border-r border-gray-200 px-4 flex flex-col justify-between">
+    <div className="w-2/6 h-[92vh]  pt-4 pb-8  bg-gray-200 border-r border-gray-200 px-4 flex flex-col justify-between">
       <div>
         {/* Header */}
         <div className="flex items-center justify-between mb-2">
-          <div className="font-semibold text-sm text-gray-500">
-            QUESTION ({questions.length})
+          <div className="font-semibold text-sm text-gray-800">
+            QUESTIONS ({forms.length})
           </div>
-          <button
-            onClick={addQuestion}
-            className="p-1 rounded-full hover:bg-gray-200 transition"
-            title="Add Question"
-          >
-            <MdAdd className="text-xl text-gray-600" />
-          </button>
+          <div className="flex items-center gap-2">
+            <AiButton setForms={setForms} />
+            <div
+              onClick={addQuestion}
+              className="p-2.5 rounded-full flex items-center  border-2 border-gray-300 text-gray-800 hover:bg-gray-200 bg-white  text-sm transition"
+              title="Add Question"
+            >
+              <MdAdd className="text-xl " />
+            </div>
+          </div>
         </div>
 
         {/* Question List */}
-        <div className="space-y-3">
+        <div className="space-y-3 h-[70vh] hideScroll overflow-y-scroll mt-3">
           {forms.map((q: any, idx: any) => (
             <div
               key={idx}
@@ -62,10 +65,12 @@ const QuizSidebar = ({
             >
               <div onClick={() => setSelectedIndex(idx)}>
                 <div className="text-md font-semibold flex  text-center mb-2">
-                  <div className="bg-gray-200 rounded-lg mr-2 text-sm flex items-center text-center justify-center h-6 w-6">
+                  <div className="bg-gray-200 rounded-lg mr-2 text-sm flex items-  text-start justify-center h-6 w-6">
                     {idx + 1}
                   </div>
-                  {q.question.slice(0, 20)}...
+                  <div className=" text-center truncate">
+                    {q.question.slice(0, 25)}...
+                  </div>
                 </div>
                 {selectedIndex === idx ? (
                   <div className="text-xs text-greeb-500 flex items-center gap-1 mt-1">
@@ -99,8 +104,7 @@ const QuizSidebar = ({
       </div>
 
       {/* Result Screen */}
-      <div className="mt-6">
-        <AiButton />
+      <div className="mt-2">
         <div
           onClick={handleSubmit}
           className="border border-gray-300 bg-green-500 rounded-xl 

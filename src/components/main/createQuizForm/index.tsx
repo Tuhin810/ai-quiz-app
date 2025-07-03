@@ -3,7 +3,7 @@ import TagsInput from "@/components/shared/tagInput/TagInput";
 import React, { use, useState } from "react";
 import { FiCheckCircle } from "react-icons/fi";
 import { useRouter } from "next/navigation";
-import { createQuiz } from "@/api/createQuize/index.api";
+import { createQuiz } from "@/app/api/createQuize/index.api";
 
 const CreateQuizForm = () => {
   const [formData, setFormData] = useState({

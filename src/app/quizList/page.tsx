@@ -1,6 +1,6 @@
 "use client";
 
-import { getUnAttemptedQuizzes } from "@/api/getQuiz/getUnattemptedQuiz";
+import { getUnAttemptedQuizzes } from "@/app/api/getQuiz/getUnattemptedQuiz";
 import QuizList from "@/components/main/quizList/QuizList";
 import Navbar from "@/components/shared/navbar/Navbar";
 import UserSidebar from "@/components/shared/userSidebar/UserSidebar";

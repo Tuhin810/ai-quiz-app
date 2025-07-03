@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import QuizSidebar from "./sidebar/QuizSidebar";
 import QuizForm, { QuizData } from "./quizform/QuizForm";
 import { useSearchParams } from "next/navigation";
-import { addMultipleQuestionsToQuiz } from "@/api/addquestions/index.api";
+import { addMultipleQuestionsToQuiz } from "@/app/api/addquestions/index.api";
 import { useRouter } from "next/navigation";
 
 const QuizBuilder = () => {
