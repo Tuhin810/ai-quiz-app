@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MdClose } from "react-icons/md";
 import { IoSend } from "react-icons/io5";
 import { FiPaperclip } from "react-icons/fi";
 import { FaUser, FaRobot } from "react-icons/fa";
+import { RiRobot2Line } from "react-icons/ri";
 
 interface Message {
   sender: "user" | "ai";
@@ -19,12 +20,13 @@ const AiChatBot = ({ quizData }: any) => {
     { sender: "ai", text: "Hi there! How can I help you with this quiz? 📚" },
   ]);
   const [input, setInput] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const bottomRef = useRef<HTMLDivElement>(null);
 
   const toggleChat = () => {
     setMessages([
       { sender: "ai", text: "Hi there! How can I help you with this quiz? 📚" },
     ]);
-
     setIsOpen((prev) => !prev);
     console.log("==> Context:", context);
   };
@@ -40,6 +42,7 @@ const AiChatBot = ({ quizData }: any) => {
 
     setMessages((prev) => [...prev, newUserMessage]);
     setInput("");
+    setIsTyping(true);
 
     try {
       const res = await fetch("/api/quizbot", {
@@ -69,6 +72,8 @@ const AiChatBot = ({ quizData }: any) => {
           text: "🤖 Sorry, something went wrong!",
         },
       ]);
+    } finally {
+      setIsTyping(false);
     }
   };
 
@@ -84,13 +89,19 @@ const AiChatBot = ({ quizData }: any) => {
     }
   }, [quizData]);
 
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   return (
     <>
       <button
         onClick={toggleChat}
-        className="fixed bottom-6 right-6 z-50 bg-white text-black p-4 rounded-full shadow-lg hover:scale-105 transition"
+        className="fixed bottom-6 right-6 z-50  w-32 bg-black text-white text-sm p-4 rounded-full shadow-xl shadow-gray-400 shadow-lg hover:scale-105 transition"
       >
-        💬
+        <div className="flex  justify-center items-center gap-2">
+          <RiRobot2Line className="text-white" /> Ask Ai
+        </div>
       </button>
 
       <AnimatePresence>
@@ -114,7 +125,7 @@ const AiChatBot = ({ quizData }: any) => {
               </motion.h1>
             </div>
 
-            <div className="w-full max-w-2xl hideScroll px-4 h-[70vh] overflow-y-auto space-y-2 text-sm text-white">
+            <div className="w-full max-w-2xl px-4 h-[70vh] overflow-y-auto space-y-2 text-sm text-white hideScroll">
               <AnimatePresence>
                 {messages.map((msg, idx) => (
                   <motion.div
@@ -124,7 +135,10 @@ const AiChatBot = ({ quizData }: any) => {
                       x: msg.sender === "user" ? 100 : -100,
                     }}
                     animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: msg.sender === "user" ? 100 : -100 }}
+                    exit={{
+                      opacity: 0,
+                      x: msg.sender === "user" ? 100 : -100,
+                    }}
                     transition={{ duration: 0.2 }}
                     className={`flex gap-2 ${
                       msg.sender === "user" ? "justify-end" : "justify-start"
@@ -152,6 +166,24 @@ const AiChatBot = ({ quizData }: any) => {
                   </motion.div>
                 ))}
               </AnimatePresence>
+
+              {/* Typing Indicator */}
+              {isTyping && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="flex items-center gap-2 text-gray-400"
+                >
+                  <div className="flex-shrink-0 bg-purple-700 text-white rounded-full w-8 h-8 flex items-center justify-center mt-1">
+                    <FaRobot className="text-xs" />
+                  </div>
+                  <div className="bg-[#1a1a1a] px-4 py-2 rounded-xl text-sm animate-pulse">
+                    Brew0 is typing...
+                  </div>
+                </motion.div>
+              )}
+              <div ref={bottomRef} />
             </div>
 
             <form

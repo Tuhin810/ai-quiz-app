@@ -3,6 +3,8 @@ import { MdAdd, MdCheckBoxOutlineBlank } from "react-icons/md";
 import { IoCheckbox } from "react-icons/io5";
 import { BsFillQuestionCircleFill } from "react-icons/bs";
 import { motion } from "framer-motion";
+import { FaRegCircleCheck } from "react-icons/fa6";
+import { RiAccountCircle2Line } from "react-icons/ri";
 
 const QuizForm = ({
   index,
@@ -59,18 +61,18 @@ const QuizForm = ({
           <div className="space-y-4 mt-6">
             {/* ✅ Correct Answer */}
             <div>
-              <label className="block text-sm text-gray-700 font-medium mb-1">
-                ✅ Correct Answer
+              <label className="flex items-center gap-2 block text-sm text-gray-700 font-medium mb-1">
+                <FaRegCircleCheck /> Correct Answer
               </label>
-              <div className="bg-green-100 text-green-800 px-4 py-2 rounded-lg border border-green-300">
+              <div className=" bg-green-100 text-green-800 px-4 py-2 rounded-lg border border-green-300">
                 {quizData?.questions[selectedIndex]?.correctOption?.text || "—"}
               </div>
             </div>
 
             {/* 🧍 Your Answer */}
             <div>
-              <label className="block text-sm text-gray-700 font-medium mb-1">
-                🧍 Your Answer
+              <label className="flex items-center gap-2 block text-sm text-gray-700 font-medium mb-1">
+                <RiAccountCircle2Line size={18} /> Your Answer
               </label>
               <div className="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg border border-gray-300">
                 {quizData?.questions[selectedIndex]?.selectedOption?.text ||
@@ -102,14 +104,23 @@ const QuizForm = ({
             ))}
           </>
         )}
-
-        <button
-          onClick={() => setSelectedIndex(selectedIndex + 1)}
-          className="flex items-center gap-2 text-sm mt-3 text-gray-800 font-semibold ml-8
+        {attempted ? (
+          <button
+            onClick={() => setSelectedIndex(selectedIndex + 1)}
+            className="flex items-center gap-2 text-sm mt-3 text-gray-800 font-semibold 
           hover:text-blue-800 border border-gray-300 border-3 px-3 py-2 rounded-md transition duration-200"
-        >
-          Go Next
-        </button>
+          >
+            Go Next
+          </button>
+        ) : (
+          <button
+            onClick={() => setSelectedIndex(selectedIndex + 1)}
+            className="flex items-center gap-2 text-sm mt-3 text-gray-800 font-semibold ml-8
+          hover:text-blue-800 border border-gray-300 border-3 px-3 py-2 rounded-md transition duration-200"
+          >
+            Go Next
+          </button>
+        )}
       </div>
     </motion.div>
   );

@@ -12,6 +12,7 @@ const QuizSidebar = ({
   handleSubmit,
   selectedIndex,
   setSelectedIndex,
+  attempted,
 }: any) => {
   return (
     <div className="w-2/6 h-[92vh]  pt-4 pb-8  bg-gray-200 border-r border-gray-200 px-4 flex flex-col justify-between">
@@ -59,26 +60,28 @@ const QuizSidebar = ({
           ))}
         </div>
       </div>
-
-      {/* Result Screen */}
-      <div className="mt-2">
-        <div
-          onClick={handleSubmit}
-          className="border border-gray-300 bg-green-500 rounded-xl 
+      {attempted ? null : (
+        <div className="mt-2">
+          <div
+            onClick={handleSubmit}
+            className="border border-gray-300 bg-green-500 rounded-xl 
           p-3 flex items-center justify-between hover:shadow-md transition cursor-pointer"
-        >
-          <div className="flex items-center gap-2">
-            <MdOutlineCheckCircle className="text-gray-100 text-xl" />
-            <div>
-              <div className="text-sm text-white font-semibold">
-                Submit Questions
+          >
+            <div className="flex items-center gap-2">
+              <MdOutlineCheckCircle className="text-gray-100 text-xl" />
+              <div>
+                <div className="text-sm text-white font-semibold">
+                  Submit Questions
+                </div>
+                <div className="text-xs text-gray-100">
+                  Click here to submit
+                </div>
               </div>
-              <div className="text-xs text-gray-100">Click here to submit</div>
             </div>
+            <BsThreeDots className="text-gray-400 mt-1" />
           </div>
-          <BsThreeDots className="text-gray-400 mt-1" />
         </div>
-      </div>
+      )}
     </div>
   );
 };

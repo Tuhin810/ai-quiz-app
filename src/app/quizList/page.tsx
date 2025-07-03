@@ -9,10 +9,14 @@ import React, { useEffect, useState } from "react";
 const page = () => {
   const [unattemptedQuizzes, setUnAttemptedQuizzes] = useState<any>([]);
   const [error, setError] = useState("");
+  let userId = null;
 
-  const userId = "68642c6383001c04b2de6833"; // Normally from session/auth context
-
+  if (typeof window !== "undefined") {
+    const storedUserId = localStorage.getItem("userId");
+    userId = storedUserId ? JSON.parse(storedUserId) : null;
+  }
   const loadAttempts = async () => {
+    console.log("====>userId0", userId);
     try {
       const data = await getUnAttemptedQuizzes(userId);
       setUnAttemptedQuizzes(data.result);

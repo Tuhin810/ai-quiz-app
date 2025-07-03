@@ -1,17 +1,19 @@
 import QuizAttempt from "@/components/main/attemptQuiz";
 import Navbar from "@/components/shared/navbar/Navbar";
 import UserSidebar from "@/components/shared/userSidebar/UserSidebar";
-import React from "react";
+import React, { Suspense } from "react";
 
 const page = () => {
   return (
-    <div className="flex h-screen overflow-hidden">
-      <UserSidebar />
-      <div className="w-full">
-        <Navbar />
-        <QuizAttempt />
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className="flex h-screen overflow-hidden">
+        <UserSidebar />
+        <div className="w-full">
+          <Navbar />
+          <QuizAttempt />
+        </div>
       </div>
-    </div>
+    </Suspense>
   );
 };
 

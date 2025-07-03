@@ -49,45 +49,12 @@ const QuizAttempt = () => {
     ]);
     setSelectedIndex(forms.length); // 👈 Select newly added form
   };
-
-  const handleSubmit = async () => {
-    setLoading(true);
-    const answers = forms
-      .map((form) => {
-        const selected = form.correctAnswers; // 👈 Assume single answer
-        if (form.correctAnswers.length <= 1) return null;
-
-        return {
-          question_id: form._id,
-          selected_option_id: form.correctAnswers,
-        };
-      })
-      .filter(Boolean);
-
-    const payload = { answers };
-    const result = await submitQuiz(
-      quizId,
-      "68643c2383001c04b2de6848",
-      payload
-    );
-    console.log("======>submit answer response", result);
-
-    try {
-      console.log("🚀 Final Payload:", payload);
-    } catch (err: any) {
-      console.error("❌ Failed to submit attempt:", err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  const storedUserId = localStorage.getItem("userId");
+  const userId = storedUserId ? JSON.parse(storedUserId) : null;
   const loadQuiz = async () => {
     setLoading(true);
     try {
-      const quizData = await getQuizForAttempt(
-        quizId,
-        "68643c2383001c04b2de6848"
-      );
+      const quizData = await getQuizForAttempt(quizId, userId);
 
       if (quizData.attempted) {
         console.log("✅ Already attempted. Score:", quizData.score);
@@ -125,6 +92,33 @@ const QuizAttempt = () => {
     }
   };
 
+  const handleSubmit = async () => {
+    setLoading(true);
+    const answers = forms
+      .map((form) => {
+        const selected = form.correctAnswers; // 👈 Assume single answer
+        if (form.correctAnswers.length <= 1) return null;
+
+        return {
+          question_id: form._id,
+          selected_option_id: form.correctAnswers,
+        };
+      })
+      .filter(Boolean);
+
+    const payload = { answers };
+    const result = await submitQuiz(quizId, userId, payload);
+    console.log("======>submit answer response", result);
+    loadQuiz();
+    try {
+      console.log("🚀 Final Payload:", payload);
+    } catch (err: any) {
+      console.error("❌ Failed to submit attempt:", err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     loadQuiz();
   }, []);
@@ -140,6 +134,7 @@ const QuizAttempt = () => {
             selectedIndex={selectedIndex}
             setSelectedIndex={setSelectedIndex}
             addForm={addForm}
+            attempted={attempted}
           />
           <div className="w-full flex justify-between h-screen overflow-y-scroll p-10">
             <div className={`${attempted ? "w-4/5 mr-5" : "w-full"}`}>
