@@ -21,6 +21,10 @@ const AiChatBot = ({ quizData }: any) => {
   const [input, setInput] = useState("");
 
   const toggleChat = () => {
+    setMessages([
+      { sender: "ai", text: "Hi there! How can I help you with this quiz? 📚" },
+    ]);
+
     setIsOpen((prev) => !prev);
     console.log("==> Context:", context);
   };
@@ -160,14 +164,11 @@ const AiChatBot = ({ quizData }: any) => {
                 transition={{ delay: 0.2 }}
                 className="flex items-center bg-[#1a1a1a] text-white rounded-xl p-3 shadow-inner"
               >
-                <button type="button" className="text-xl text-gray-400 px-2">
-                  <FiPaperclip />
-                </button>
                 <input
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   type="text"
-                  placeholder="Ask v0 a question..."
+                  placeholder="Ask Brew0 a question..."
                   className="flex-1 bg-transparent px-2 text-sm outline-none placeholder-gray-500"
                 />
                 <div className="flex items-center gap-2 ml-2">
