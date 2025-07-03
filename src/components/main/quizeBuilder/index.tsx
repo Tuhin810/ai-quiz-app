@@ -3,8 +3,14 @@
 import React, { useState } from "react";
 import QuizSidebar from "./sidebar/QuizSidebar";
 import QuizForm, { QuizData } from "./quizform/QuizForm";
+import { useSearchParams } from "next/navigation";
+import { addMultipleQuestionsToQuiz } from "@/api/addquestions/index.api";
+import { useRouter } from "next/navigation";
 
 const QuizBuilder = () => {
+  const searchParams = useSearchParams();
+  const quizId = searchParams.get("quizId");
+  const router = useRouter();
   const [forms, setForms] = useState<QuizData[]>([
     {
       question: "",
@@ -35,19 +41,22 @@ const QuizBuilder = () => {
     setSelectedIndex(forms.length); // 👈 Select newly added form
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const payload = {
       questions: forms.map((form) => ({
         text: form.question,
         options: form.options,
-        correctOptionIndex: form.multipleAnswers
-          ? form.correctAnswers
-          : form.correctAnswers[0],
+        correctOptionIndex: form.correctAnswers[0] || 0, // Use first correct answer index
       })),
     };
 
-    console.log("Payload ready to send:", payload);
-    // fetch("/api/submit-quiz", { method: "POST", body: JSON.stringify(payload) })
+    console.log("✅ Questions added:", payload);
+    try {
+      const result = await addMultipleQuestionsToQuiz(quizId, payload);
+      router.push(`quizList`);
+    } catch (err: any) {
+      console.error("❌ Failed to add questions:", err.message);
+    }
   };
 
   return (

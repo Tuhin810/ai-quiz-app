@@ -80,17 +80,7 @@ const QuizForm: React.FC<QuizFormProps> = ({
         <div className="flex items-center justify-between">
           <h3 className="font-semibold text-md text-gray-700">Choices</h3>
           <label className="flex items-center gap-2 text-sm text-gray-600">
-            <input
-              type="checkbox"
-              checked={multipleAnswers}
-              onChange={() =>
-                handleChange({
-                  multipleAnswers: !multipleAnswers,
-                  correctAnswers: [],
-                })
-              }
-            />
-            Allow multiple answers
+            Select the correct answer answers
           </label>
         </div>
 
