@@ -36,7 +36,7 @@ const CreateQuizForm = () => {
       const response = await createQuiz(payload);
       console.log("======> quiz id :", response?.result?._id);
       setMessage("✅ Quiz created successfully!");
-      router.push(`/quiz?quizId=${response?.result?._id}`);
+      router.push(`/addquestion?quizId=${response?.result?._id}`);
     } catch (error) {
       setMessage("❌ Something went wrong.");
     } finally {

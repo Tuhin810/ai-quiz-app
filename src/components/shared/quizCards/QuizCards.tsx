@@ -1,23 +1,19 @@
 import { formatToReadableDate } from "@/services/dateformat";
 import React from "react";
 import { RiQuestionnaireFill } from "react-icons/ri";
-
-interface QuizCardProps {
-  title: string;
-  description: string;
-  tags: string[];
-  urgency: string;
-  enrolledCount: number;
-  hostedAgo: string;
-  questionsCount: number;
-  userImg: string;
-  bgImg: string;
-}
+import { useRouter } from "next/navigation";
 
 const QuizCards = ({ quiz, questionsCount, date }: any) => {
   console.log("=====Card Quiz", quiz);
+  const router = useRouter();
+  const handleNavigate = () => {
+    router.push(`/quiz?quizId=${quiz._id}`);
+  };
   return (
-    <div className="max-w-sm w-full h-44 cursor-pointer hover:shadow-md hover:bg-gray-50 rounded-xl border border-gray-200 bg-white shadow p-4 flex flex-col justify-between">
+    <div
+      onClick={handleNavigate}
+      className="max-w-sm w-full h-44 cursor-pointer hover:shadow-md hover:bg-gray-50 rounded-xl border border-gray-200 bg-white shadow p-4 flex flex-col justify-between"
+    >
       <div className="space-y-3">
         {/* Title */}
         <h3 className="text-lg font-semibold text-gray-800 line-clamp-1">
