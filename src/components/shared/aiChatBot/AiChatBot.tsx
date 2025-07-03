@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { MdClose } from "react-icons/md";
 import { IoSend } from "react-icons/io5";
 import { FiPaperclip } from "react-icons/fi";
+import { FaUser, FaRobot } from "react-icons/fa";
 
 interface Message {
   sender: "user" | "ai";
@@ -43,7 +45,7 @@ const AiChatBot = ({ quizData }: any) => {
         },
         body: JSON.stringify({
           context,
-          conversation: [...messages, newUserMessage], // full history
+          conversation: [...messages, newUserMessage],
         }),
       });
 
@@ -87,72 +89,107 @@ const AiChatBot = ({ quizData }: any) => {
         💬
       </button>
 
-      {isOpen && (
-        <div className="fixed inset-0 z-40 bg-black bg-opacity-95 flex flex-col items-center justify-end">
-          <div className="flex-1 flex flex-col items-center justify-center">
-            <h1 className="text-white text-2xl font-bold mb-6">
-              {quizData.text}
-            </h1>
-          </div>
-
-          <div className="w-full max-w-4xl px-4 pb-2 h-[400px] overflow-y-auto space-y-2 text-sm text-white">
-            {messages.map((msg, idx) => (
-              <div
-                key={idx}
-                className={`flex ${
-                  msg.sender === "user" ? "justify-end" : "justify-start"
-                }`}
-              >
-                <div
-                  className={`max-w-xs px-4 py-2 rounded-xl ${
-                    msg.sender === "user"
-                      ? "bg-purple-600 text-white"
-                      : "bg-[#1a1a1a] text-gray-200"
-                  }`}
-                >
-                  {msg.text}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <form onSubmit={handleSubmit} className="w-full max-w-4xl px-4 pb-8">
-            <div className="flex items-center bg-[#1a1a1a] text-white rounded-xl p-3 shadow-inner">
-              <button type="button" className="text-xl text-gray-400 px-2">
-                <FiPaperclip />
-              </button>
-              <input
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                type="text"
-                placeholder="Ask v0 a question..."
-                className="flex-1 bg-transparent px-2 text-sm outline-none placeholder-gray-500"
-              />
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  className="bg-[#292929] text-gray-200 text-xs px-3 py-1 rounded-md border border-gray-600"
-                >
-                  + Project
-                </button>
-                <button
-                  type="submit"
-                  className="p-2 rounded-full bg-white text-black"
-                >
-                  <IoSend />
-                </button>
-              </div>
-            </div>
-          </form>
-
-          <button
-            onClick={toggleChat}
-            className="absolute top-4 right-6 text-white text-xl hover:text-gray-400"
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            key="chatbot"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-50 bg-[#212121] bg-opacity-90 flex flex-col items-center justify-end"
           >
-            <MdClose />
-          </button>
-        </div>
-      )}
+            <div className="flex-1 flex flex-col items-center justify-center text-center px-4">
+              <motion.h1
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="text-white text-2xl font-bold mb-4"
+              >
+                {quizData?.text || "Let's talk about your quiz!"}
+              </motion.h1>
+            </div>
+
+            <div className="w-full max-w-2xl hideScroll px-4 h-[70vh] overflow-y-auto space-y-2 text-sm text-white">
+              <AnimatePresence>
+                {messages.map((msg, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{
+                      opacity: 0,
+                      x: msg.sender === "user" ? 100 : -100,
+                    }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: msg.sender === "user" ? 100 : -100 }}
+                    transition={{ duration: 0.2 }}
+                    className={`flex gap-2 ${
+                      msg.sender === "user" ? "justify-end" : "justify-start"
+                    }`}
+                  >
+                    {msg.sender === "ai" && (
+                      <div className="flex-shrink-0 bg-purple-700 text-white rounded-full w-8 h-8 flex items-center justify-center mt-1">
+                        <FaRobot className="text-xs" />
+                      </div>
+                    )}
+                    <div
+                      className={`max-w-xs px-4 py-2 rounded-xl ${
+                        msg.sender === "user"
+                          ? "bg-purple-600 text-white rounded-br-none"
+                          : "bg-[#1a1a1a] text-gray-200 rounded-bl-none"
+                      }`}
+                    >
+                      {msg.text}
+                    </div>
+                    {msg.sender === "user" && (
+                      <div className="flex-shrink-0 bg-gray-600 text-white rounded-full w-8 h-8 flex items-center justify-center mt-1">
+                        <FaUser className="text-xs" />
+                      </div>
+                    )}
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+
+            <form
+              onSubmit={handleSubmit}
+              className="w-full max-w-2xl px-4 pt-4 pb-8"
+            >
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="flex items-center bg-[#1a1a1a] text-white rounded-xl p-3 shadow-inner"
+              >
+                <button type="button" className="text-xl text-gray-400 px-2">
+                  <FiPaperclip />
+                </button>
+                <input
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  type="text"
+                  placeholder="Ask v0 a question..."
+                  className="flex-1 bg-transparent px-2 text-sm outline-none placeholder-gray-500"
+                />
+                <div className="flex items-center gap-2 ml-2">
+                  <button
+                    type="submit"
+                    className="p-2 rounded-full bg-white text-black hover:scale-105 transition"
+                  >
+                    <IoSend />
+                  </button>
+                </div>
+              </motion.div>
+            </form>
+
+            <button
+              onClick={toggleChat}
+              className="absolute top-4 right-6 text-white text-xl hover:text-gray-400"
+            >
+              <MdClose />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };
