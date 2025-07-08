@@ -15,6 +15,7 @@ import { TiBookmark } from "react-icons/ti";
 import { MdOutlineTry } from "react-icons/md";
 import { TbHome } from "react-icons/tb";
 import Link from "next/link";
+import { SidebarItem } from "../sidebarLinks/SidebarItem";
 
 export const UserSidebar: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(true);
@@ -51,64 +52,55 @@ export const UserSidebar: React.FC = () => {
       </div>
 
       {/* Navigation */}
+
       <nav className="space-y-2 mt-12">
-        <SidebarItem
-          route={"/quizList"}
-          icon={<TbHome size={22} />}
-          label="Home"
-          isExpanded={isExpanded}
-        />
-        <SidebarItem
-          route={"/attempted"}
-          icon={<MdOutlineTry size={22} />}
-          label="Attempted"
-          isExpanded={isExpanded}
-        />
-        <SidebarItem
-          route={"/bookmark"}
-          icon={<TiBookmark size={22} />}
-          label="Saved"
-          isExpanded={isExpanded}
-        />
-        <SidebarItem
-          route={"/createQuiz"}
-          icon={<TiBookmark size={22} />}
-          label="Create Quiz"
-          isExpanded={isExpanded}
-        />
-        <SidebarItem
-          route={"/bookmark"}
-          icon={<TiBookmark size={22} />}
-          label="Saved"
-          isExpanded={isExpanded}
-        />
+        {Number(localStorage.getItem("role")) === 1 ? (
+          <>
+            <SidebarItem
+              route={"/quizList"}
+              icon={<TbHome size={22} />}
+              label="Home"
+              isExpanded={isExpanded}
+            />
+            <SidebarItem
+              route={"/createQuiz"}
+              icon={<TiBookmark size={22} />}
+              label="Create Quiz"
+              isExpanded={isExpanded}
+            />
+            <SidebarItem
+              route={"/bookmark"}
+              icon={<TiBookmark size={22} />}
+              label="Saved"
+              isExpanded={isExpanded}
+            />
+          </>
+        ) : (
+          <>
+            <SidebarItem
+              route={"/quizList"}
+              icon={<TbHome size={22} />}
+              label="Home"
+              isExpanded={isExpanded}
+            />
+            <SidebarItem
+              route={"/attempted"}
+              icon={<MdOutlineTry size={22} />}
+              label="Attempted"
+              isExpanded={isExpanded}
+            />
+            <SidebarItem
+              route={"/bookmark"}
+              icon={<TiBookmark size={22} />}
+              label="Saved"
+              isExpanded={isExpanded}
+            />
+          </>
+        )}
       </nav>
     </div>
   );
 };
-
-const SidebarItem = ({
-  icon,
-  label,
-  isExpanded,
-  route,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  isExpanded: boolean;
-  route: any;
-}) => (
-  <Link
-    href={route}
-    className={clsx(
-      "flex items-center border border-gray-300 gap-3 p-3 shadow-sm hover:shadow-md rounded-xl bg-white hover:text-gray-100 hover:bg-blue-500 cursor-pointer transition-all",
-      !isExpanded && "justify-center"
-    )}
-  >
-    <span className="text-xl">{icon}</span>
-    {isExpanded && <span>{label}</span>}
-  </Link>
-);
 
 const FavoriteItem = ({
   color,

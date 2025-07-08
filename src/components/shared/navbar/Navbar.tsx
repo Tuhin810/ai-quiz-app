@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import React, { useState, useRef, useEffect } from "react";
 import { FiChevronDown } from "react-icons/fi";
 
@@ -7,6 +8,11 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  const router = useRouter();
+  const handleogout = () => {
+    localStorage.clear();
+    router.push(`/login`);
+  };
   // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -47,7 +53,10 @@ const Navbar = () => {
               <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                 Settings
               </li>
-              <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+              <li
+                onClick={handleogout}
+                className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+              >
                 Logout
               </li>
             </ul>

@@ -9,7 +9,7 @@ const QuizList = ({ quizzes, attempted }: any) => {
   const [view, setView] = useState<"grid" | "list">("grid");
   const [filter, setFilter] = useState("All");
 
-  const filters = ["All", "UI/UX", "Frontend", "Urgent", "Completed"];
+  const filters = [""];
 
   // Optional: filter logic (not active yet)
   // const filteredQuizzes =
@@ -60,6 +60,13 @@ const QuizList = ({ quizzes, attempted }: any) => {
       </div>
 
       {/* Quiz Cards */}
+
+      {quizzes.length === 0 && (
+        <div className="text-center text-gray-500 mt-10 justify-center flex flex-col items-center">
+          <img src="/empty.jpg" alt="" className="w-[30rem]" />
+          No quizzes available.
+        </div>
+      )}
       <div
         className={`${
           view === "grid"
@@ -85,7 +92,7 @@ const QuizList = ({ quizzes, attempted }: any) => {
                 key={index}
                 quiz={quiz?.quiz}
                 date={quiz?.quiz?.createdAt}
-                questionsCount={5}
+                questionsCount={quiz?.questionCount}
               />
             ))}
           </>

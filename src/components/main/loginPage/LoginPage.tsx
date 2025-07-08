@@ -36,6 +36,7 @@ const LoginPage = () => {
       console.log("===>user ", user?.result);
       localStorage.setItem("user", JSON.stringify(user.result));
       localStorage.setItem("userId", JSON.stringify(user.result?._id));
+      localStorage.setItem("role", JSON.stringify(user.result?.role));
       router.push(`/quizList`);
     } catch (error) {}
   };
@@ -48,7 +49,7 @@ const LoginPage = () => {
       className="bg-white rounded-2xl shadow-2xl overflow-hidden w-full h-screen pr-20 grid grid-cols-1 lg:grid-cols-2"
     >
       {/* Left Side */}
-      <div className="bg-gray-50 pl-16 py-10 border-r border-gray-200 hidden lg:flex flex-col justify-between">
+      <div className="bg-gray-50 pl-16 py-10 border-r w-2/3 border-gray-200 hidden lg:flex flex-col justify-between">
         <div>
           <h1 className="text-2xl font-bold text-blue-600 mb-10 tracking-tight">
             BrainBrew
