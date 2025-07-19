@@ -5,20 +5,18 @@ import QuizList from "@/components/main/quizList/QuizList";
 import Navbar from "@/components/shared/navbar/Navbar";
 import UserSidebar from "@/components/shared/userSidebar/UserSidebar";
 import React, { useEffect, useState } from "react";
+import { useUser } from "../context/UserContext";
 
 const page = () => {
+  const { user } = useUser();
+
   const [unattemptedQuizzes, setUnAttemptedQuizzes] = useState<any>([]);
   const [error, setError] = useState("");
-  let userId = null;
 
-  if (typeof window !== "undefined") {
-    const storedUserId = localStorage.getItem("userId");
-    userId = storedUserId ? JSON.parse(storedUserId) : null;
-  }
   const loadAttempts = async () => {
-    console.log("====>userId0", userId);
+    console.log("====>userId0", user);
     try {
-      const data = await getUnAttemptedQuizzes(userId);
+      const data = await getUnAttemptedQuizzes(user?._id);
       setUnAttemptedQuizzes(data.result);
     } catch (err: any) {
       setError(err.message || "Failed to fetch attempts.");
@@ -26,7 +24,7 @@ const page = () => {
   };
   useEffect(() => {
     loadAttempts();
-  }, []);
+  }, [user]);
   return (
     <div className="flex h-screen overflow-hidden">
       <UserSidebar />

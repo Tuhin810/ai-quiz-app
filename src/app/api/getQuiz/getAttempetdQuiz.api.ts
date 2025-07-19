@@ -1,12 +1,12 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8989";
+const BASE_URL = "https://quiz.tuhinthakur.me";
 
 /**
  * Fetch all quizzes attempted by a user
  * @param userId string - ID of the user
  */
-export const getAttemptedQuizzes = async (userId: string) => {
+export const getAttemptedQuizzes = async (userId: any) => {
   try {
     const response = await axios.get(
       `${BASE_URL}/api/v1/attempt/get-attempted-quizzes`,

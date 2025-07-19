@@ -9,12 +9,14 @@ import {
   HiOutlineUsers,
 } from "react-icons/hi";
 import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2";
-import { authUser } from "@/app/api/auth/index.api";
 import { useRouter } from "next/navigation";
+import { authUser } from "@/app/api/auth/index.api";
+import { useUser } from "@/app/context/UserContext";
 
 const LoginPage = () => {
   const [role, setRole] = useState<"Admin" | "Participant">("Admin");
   const [email, setEmail] = useState("");
+  const { setUser } = useUser();
   const [password, setPassword] = useState("");
   const router = useRouter();
   const handleSubmit = async (e: React.FormEvent) => {
@@ -34,9 +36,8 @@ const LoginPage = () => {
         role: roleValue, // or "Admin"
       });
       console.log("===>user ", user?.result);
-      localStorage.setItem("user", JSON.stringify(user.result));
-      localStorage.setItem("userId", JSON.stringify(user.result?._id));
-      localStorage.setItem("role", JSON.stringify(user.result?.role));
+      setUser(user?.result);
+
       router.push(`/quizList`);
     } catch (error) {}
   };
@@ -139,7 +140,7 @@ const LoginPage = () => {
                   role === "Admin" ? "bg-black text-white" : "text-gray-700"
                 }`}
               >
-                Admin
+                Organizer
               </button>
               <button
                 onClick={() => setRole("Participant")}

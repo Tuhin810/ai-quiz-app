@@ -18,7 +18,7 @@ const QuizList = ({ quizzes, attempted }: any) => {
   //     : quizzes.filter((q: any) => q.tags.includes(filter.replace(" ", "")));
 
   return (
-    <div className="p-10 space-y-6 h-screen w-full overflow-y-scroll pb-20">
+    <div className="p-4 sm:p-10 space-y-6 h-screen w-full overflow-y-scroll pb-20">
       {/* Toolbar */}
       <div className="flex flex-wrap justify-between items-center gap-4">
         {/* Filter buttons */}

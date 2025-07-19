@@ -1,9 +1,9 @@
 import axios from "axios";
 
-export const getQuizForAttempt = async (quizId: string, userId: string) => {
+export const getQuizForAttempt = async (quizId: string, userId: any) => {
   try {
     const response = await axios.get(
-      `http://localhost:8989/api/v1/attempt/attempt-quiz`,
+      `https://quiz.tuhinthakur.me/api/v1/attempt/attempt-quiz`,
       {
         params: {
           quizId,

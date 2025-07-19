@@ -10,6 +10,7 @@ import { getQuizForAttempt } from "@/app/api/attemptQuiz/index.api";
 import { submitQuiz } from "@/app/api/submitQuiz/index.api";
 import ScoreCard from "@/components/shared/scoreCard/ScoreCard";
 import AiChatBot from "@/components/shared/aiChatBot/AiChatBot";
+import { useUser } from "@/app/context/UserContext";
 
 const QuizAttempt = () => {
   const searchParams = useSearchParams();
@@ -49,12 +50,11 @@ const QuizAttempt = () => {
     ]);
     setSelectedIndex(forms.length); // 👈 Select newly added form
   };
-  const storedUserId = localStorage.getItem("userId");
-  const userId = storedUserId ? JSON.parse(storedUserId) : null;
+  const { user } = useUser();
   const loadQuiz = async () => {
     setLoading(true);
     try {
-      const quizData = await getQuizForAttempt(quizId, userId);
+      const quizData = await getQuizForAttempt(quizId, user?._id);
 
       if (quizData.attempted) {
         console.log("✅ Already attempted. Score:", quizData.score);
@@ -107,7 +107,7 @@ const QuizAttempt = () => {
       .filter(Boolean);
 
     const payload = { answers };
-    const result = await submitQuiz(quizId, userId, payload);
+    const result = await submitQuiz(quizId, user?._id, payload);
     console.log("======>submit answer response", result);
     loadQuiz();
     try {

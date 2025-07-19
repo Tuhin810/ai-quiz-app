@@ -16,8 +16,10 @@ import { MdOutlineTry } from "react-icons/md";
 import { TbHome } from "react-icons/tb";
 import Link from "next/link";
 import { SidebarItem } from "../sidebarLinks/SidebarItem";
+import { useUser } from "@/app/context/UserContext";
 
 export const UserSidebar: React.FC = () => {
+  const { user } = useUser();
   const [isExpanded, setIsExpanded] = useState(true);
 
   const toggleSidebar = () => setIsExpanded((prev) => !prev);
@@ -48,13 +50,23 @@ export const UserSidebar: React.FC = () => {
           !isExpanded && "text-center"
         )}
       >
-        {isExpanded ? "Dashboard" : "📘"}
+        {isExpanded ? (
+          <>
+            <img
+              src="https://res.cloudinary.com/diecfwnp9/image/upload/v1752909439/Quizzical_didyok.jpg"
+              alt=""
+              className="mt-5"
+            />
+          </>
+        ) : (
+          <div className=""></div>
+        )}
       </div>
 
       {/* Navigation */}
 
-      <nav className="space-y-2 mt-12">
-        {Number(localStorage.getItem("role")) === 1 ? (
+      <nav className="space-y-2   mt-12">
+        {user?.role === 1 ? (
           <>
             <SidebarItem
               route={"/quizList"}

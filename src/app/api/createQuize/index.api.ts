@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8989";
+const BASE_URL = "https://quiz.tuhinthakur.me";
 
 /**
  * Create a new quiz (admin only)

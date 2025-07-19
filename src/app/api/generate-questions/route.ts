@@ -20,11 +20,11 @@ Return strictly JSON like:
     {
       method: "POST",
       headers: {
-        Authorization: `Bearer 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`,
+        Authorization: `Bearer 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`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "mistralai/mistral-7b-instruct",
+        model: "openai/gpt-3.5-turbo",
         messages: [{ role: "user", content: prompt }],
       }),
     }

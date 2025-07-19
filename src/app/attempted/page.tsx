@@ -4,20 +4,17 @@ import QuizList from "@/components/main/quizList/QuizList";
 import Navbar from "@/components/shared/navbar/Navbar";
 import UserSidebar from "@/components/shared/userSidebar/UserSidebar";
 import React, { Suspense, useEffect, useState } from "react";
+import { useUser } from "../context/UserContext";
 
 const page = () => {
   const [attemptedQuizzes, setAttemptedQuizzes] = useState<any>([]);
   const [error, setError] = useState("");
+  const { user } = useUser();
 
-  let userId = null;
-
-  if (typeof window !== "undefined") {
-    const storedUserId = localStorage.getItem("userId");
-    userId = storedUserId ? JSON.parse(storedUserId) : null;
-  }
   const loadAttempts = async () => {
+    console.log("====>userId0", user?._id);
     try {
-      const data = await getAttemptedQuizzes(userId);
+      const data = await getAttemptedQuizzes(user?._id);
       setAttemptedQuizzes(data.result);
       console.log("===>attemptedQuizzes", data.result);
     } catch (err: any) {
@@ -26,7 +23,7 @@ const page = () => {
   };
   useEffect(() => {
     loadAttempts();
-  }, []);
+  }, [user]);
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div className="flex h-screen overflow-hidden">
